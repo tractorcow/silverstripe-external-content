@@ -105,7 +105,7 @@ class ExternalContentAdmin extends LeftAndMain {
 	 * Return the edit form
 	 * @see cms/code/LeftAndMain#EditForm()
 	 */
-	public function EditForm() {
+	public function EditForm($request = null) {
 		HtmlEditorField::include_js();
 
 		$cur = $this->currentPageID();
@@ -193,14 +193,14 @@ class ExternalContentAdmin extends LeftAndMain {
 	/**
 	 * Return the form for editing
 	 */
-	function getEditForm($id) {
+	function getEditForm($id = null, $fields = null) {
 		$record = null;
 		if ($id && $id != "root") {
 			$record = ExternalContent::getDataObjectFor($id);
 		} 
 
 		if ($record) {
-			$fields = $record->getCMSFields();
+			$fields = ($fields) ? $fields : $record->getCMSFields();
 
 			// If we're editing an external source or item, and it can be imported
 			// then add the "Import" tab.
@@ -289,15 +289,14 @@ class ExternalContentAdmin extends LeftAndMain {
 	 * @param Form $form
 	 * @param type $request 
 	 */
-	public function save($urlParams, Form $form, $request) {
+	public function save($data, $form) {
 		$record = null;
-		if (isset($urlParams['ID'])) {
-			$record = ExternalContent::getDataObjectFor($urlParams['ID']);
+		if (isset($data['ID'])) {
+			$record = ExternalContent::getDataObjectFor($data['ID']);
 		}
 
-		if (!$record) {
-			return parent::save($urlParams, $form);
-		}
+		if (!$record)
+			return parent::save($data, $form);
 
 		if ($record->canEdit()) {
 			// lets load the params that have been sent and set those that have an editable mapping
@@ -356,8 +355,8 @@ class ExternalContentAdmin extends LeftAndMain {
 	 * We do our own version of returning tree data here - SilverStripe's base functionality is just too greedy
 	 * with data for this to be happy.
 	 */
-	public function getsubtree() {
-		$obj = ExternalContent::getDataObjectFor($_REQUEST['ID']);  //  DataObject::get_by_id('ExternalContentSource', $_REQUEST['ID']);
+	public function getsubtree($request) {
+		$obj = ExternalContent::getDataObjectFor($request->getVar('ID'));  //  DataObject::get_by_id('ExternalContentSource', $_REQUEST['ID']);
 
 		if (isset($_GET['debug_profile']))
 			Profiler::mark("ExternalContentAdmin", "getsubtree");

@@ -143,7 +143,7 @@ class ExternalContentSource extends DataObject {
 	 *
 	 * @return bool
 	 */
-	public function canCreate() {
+	public function canCreate($member = null) {
 		return true;
 	}
 
@@ -156,7 +156,7 @@ class ExternalContentSource extends DataObject {
 	 * 
 	 * @see sapphire/core/model/DataObject#canEdit($member)
 	 */
-	public function canEdit() {
+	public function canEdit($member = null) {
 		return true;
 	}
 
@@ -168,7 +168,7 @@ class ExternalContentSource extends DataObject {
 	 * 
 	 * @see sapphire/core/model/DataObject#canView($member)
 	 */
-	public function canView() {
+	public function canView($member = null) {
 		return true;
 	}
 
@@ -190,7 +190,7 @@ class ExternalContentSource extends DataObject {
 	 * source for all items that are children of the 'root' node. 
 	 * 
 	 * @param boolean $showAll
-	 * @return DataObjectSet
+	 * @return ArrayList
 	 */
 	public function stageChildren($showAll = false) {
 		// if we don't have an ID directly, we should load and return ALL the external content sources
@@ -198,7 +198,7 @@ class ExternalContentSource extends DataObject {
 			return DataObject::get('ExternalContentSource');
 		}
 
-		$children = new DataObjectSet();
+		$children = new ArrayList();
 		return $children;
 	}
 
@@ -209,7 +209,7 @@ class ExternalContentSource extends DataObject {
 		static $children;
 
 		if (!$children) {
-			$children = new DataObjectSet();
+			$children = new ArrayList();
 			$kids = $this->stageChildren();
 			if ($kids) {
 				foreach ($kids as $child) {

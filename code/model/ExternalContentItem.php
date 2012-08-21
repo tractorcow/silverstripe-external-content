@@ -205,11 +205,11 @@ class ExternalContentItem extends DataObject {
 	 * source  instead of this node directly
 	 * 
 	 * @param boolean $showAll
-	 * @return DataObjectSet
+	 * @return ArrayList
 	 */
 	public function stageChildren($showAll = false) {
 		if ($this->Title != 'Content Root' && $this->source) {
-			$children = new DataObjectSet();
+			$children = new ArrayList();
 			$item = new ExternalContentItem($this->source, $this->Title . '1');
 			$item->Title = $this->Title . '1';
 			$item->MenuTitle = $item->Title;
@@ -226,7 +226,7 @@ class ExternalContentItem extends DataObject {
 		static $children;
 
 		if (!$children) {
-			$children = new DataObjectSet();
+			$children = new ArrayList();
 			$kids = $this->stageChildren();
 			if ($kids) {
 				foreach ($kids as $child) {
@@ -300,8 +300,8 @@ class ExternalContentItem extends DataObject {
 	 * 
 	 * @see sapphire/core/model/DataObject#canEdit($member)
 	 */
-	public function canEdit() {
-		return $this->source->canEdit();
+	public function canEdit($member = null) {
+		return $this->source->canEdit($member);
 	}
 
 	/**
@@ -312,8 +312,8 @@ class ExternalContentItem extends DataObject {
 	 * 
 	 * @see sapphire/core/model/DataObject#canView($member)
 	 */
-	public function canView() {
-		return $this->source->canView();
+	public function canView($member = null) {
+		return $this->source->canView($member);
 	}
 
 	/**

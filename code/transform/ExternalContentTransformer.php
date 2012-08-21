@@ -35,7 +35,7 @@ interface ExternalContentTransformer {
  * Contains
  * 
  * page - The created page
- * children - A DataObjectSet containing those children 
+ * children - A ArrayList containing those children 
  * 			  that can still be used for additional tranforms
  * 			  This allows some chidlren to be filtered out (eg dependant pages)
  * 			  and loaded by the new page type instead
@@ -56,7 +56,7 @@ class TransformResult {
 	public $page;
 
 	/**
-	 * @var DataObjectSet
+	 * @var ArrayList
 	 */
 	public $children;
 
